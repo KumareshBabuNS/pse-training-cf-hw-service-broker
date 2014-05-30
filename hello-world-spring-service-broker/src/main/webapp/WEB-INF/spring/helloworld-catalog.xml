@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- Hello World Catalog instance and supporting data/beans -->
+    <bean id="helloworldCatalog" class="com.pivotal.cf.broker.model.Catalog">
+        <constructor-arg name="serviceDefinitions" ref="helloworldServiceDefinitions" />
+    </bean>
+
+    <util:list id="helloworldServiceDefinitions">
+        <ref bean="helloworldServiceDefinition"/>
+    </util:list>
+
+    <bean id="helloworldServiceDefinition" class="com.pivotal.cf.broker.model.ServiceDefinition">
+        <constructor-arg name="id" value="helloworld"/>
+        <constructor-arg name="name" value="helloworldService"/>
+        <constructor-arg name="description" value="helloworld Service Instances"/>
+        <constructor-arg name="bindable" value="true"/>
+        <constructor-arg name="plans" ref="helloworldPlans" />
+        <property name="tags" ref="helloworldTags"/>
+    </bean>
+
+    <util:list id="helloworldPlans">
+        <ref bean="helloworld-plan" />
+    </util:list>
+
+    <bean id="helloworld-plan" class="com.pivotal.cf.broker.model.Plan">
+        <constructor-arg name="id" value="hello-world"/>
+        <constructor-arg name="name" value="hello-world"/>
+        <constructor-arg name="description" value="This is a the (only) helloworld plan."/>
+    </bean>
+
+    <util:list id="helloworldTags">
+        <value>helloworld</value>
+        <value>rdbms</value>
+    </util:list>
+
+</beans>

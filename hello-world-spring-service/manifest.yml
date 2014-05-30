@@ -1,0 +1,6 @@
+---
+applications:
+- name: hello-world-spring-service
+  memory: 512M
+  instances: 1
+  path: ./build/libs/hello-world-spring-service-0.1.war

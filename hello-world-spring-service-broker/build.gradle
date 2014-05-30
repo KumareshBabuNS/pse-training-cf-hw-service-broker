@@ -1,0 +1,98 @@
+apply plugin: 'java'
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+apply plugin: 'war'
+
+//apply plugin: 'cloudfoundry'
+
+sourceCompatibility = 1.7
+version = '0.1'
+
+ext {
+    baseName = "hello-world-spring-service-broker"
+    springVersion = '3.2.5.RELEASE'
+    springSecurityVersion = '3.2.0.RELEASE'
+    jacksonVersion = '1.9.13'
+    slf4jVersion = '1.7.5'
+    log4jVersion = '1.2.14'
+    servletApiVersion = '2.5'
+    jspApiVersion = '2.1'
+    jstlVersion = '1.2'
+    hibernateValidatorVersion = '5.0.1.Final'
+    hamcrestVersion = '1.3'
+    junitVersion = '4.7'
+    mockitoVersion = '1.9.5'
+    jsonpathVersion = '0.9.1'
+    dbcpVersion = '1.4'
+    commonsCodecVersion = '1.8'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Hello World service backend', 'Implementation-Version': version
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile ("org.springframework:spring-context:${springVersion}") {
+      exclude group:"commons-logging", module:"commons-logging"
+    }
+    compile "org.springframework:spring-webmvc:${springVersion}"
+    compile "commons-codec:commons-codec:${commonsCodecVersion}"
+    compile "org.springframework:spring-web:${springVersion}"
+    compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-config:${springSecurityVersion}"          
+
+    compile "org.codehaus.jackson:jackson-mapper-asl:${jacksonVersion}"
+
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+    runtime "org.slf4j:slf4j-log4j12:${slf4jVersion}"       
+    runtime ("log4j:log4j:${log4jVersion}") {
+      exclude group:"javax.mail", module:"mail"
+      exclude group:"javax.jms", module:"jms"
+      exclude group:"com.sun.jdmk", module:"jmxtools"
+      exclude group:"com.sun.jmx", module:"jmxri"
+    }
+    
+    compile "javax.servlet:servlet-api:${servletApiVersion}"
+    compile "javax.servlet.jsp:jsp-api:${jspApiVersion}"
+    compile "javax.servlet:jstl:${jstlVersion}"
+
+    compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+  
+    testCompile "org.hamcrest:hamcrest-all:${hamcrestVersion}"
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.mockito:mockito-all:${mockitoVersion}"
+
+    testCompile "org.springframework:spring-test:${springVersion}"
+    testCompile "com.jayway.jsonpath:json-path:${jsonpathVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.10'
+}
+
+test {
+    afterTest { desc, result ->
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
+
+war {
+    baseName = baseName
+    version = version
+}

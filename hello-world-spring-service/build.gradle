@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'maven-publish'
+//apply plugin: 'cloudfoundry'
+
+version = "0.1"
+group = "org.cloudfoundry.community.helloworldservice"
+description = "Spring based hello world service backend"
+
+ext {
+    springBootVersion = '1.0.2.RELEASE'
+    hibernateValidatorVersion = '5.1.0.Final'
+    jsonPathVersion = '0.9.1'
+    jacksonVersion = '1.9.13'
+    commonsCodecVersion=1.8
+    baseName = "hello-world-spring-service"
+    baseNameTests = baseName + "-tests"
+    log4jVersion = "1.2.14"
+}
+
+war {
+    baseName = baseName
+    version =  version
+}
+
+
+task testsJar(type: Jar) {
+  from sourceSets.test.output
+  baseName = baseNameTests
+  version =  version
+} 
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+//    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+//    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+
+    compile("org.springframework:spring-webmvc:3.2.4.RELEASE")
+    compile("org.springframework.security:spring-security-web:3.2.4.RELEASE")
+    compile("org.springframework.security:spring-security-config:3.2.4.RELEASE")
+    compile("javax.servlet:javax.servlet-api:3.1.0")
+    compile("com.fasterxml.jackson.core:jackson-core:2.3.3")
+    compile("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.3.3")
+    compile("org.slf4j:slf4j-api:1.5.10")
+    compile("org.slf4j:slf4j-log4j12:1.5.10")
+
+
+    compile("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
+    compile("org.codehaus.jackson:jackson-mapper-asl:${jacksonVersion}")
+    compile "commons-codec:commons-codec:${commonsCodecVersion}"
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
+
+    runtime ("log4j:log4j:${log4jVersion}") {
+        exclude group:"javax.mail", module:"mail"
+        exclude group:"javax.jms", module:"jms"
+        exclude group:"com.sun.jdmk", module:"jmxtools"
+        exclude group:"com.sun.jmx", module:"jmxri"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
