@@ -27,7 +27,7 @@ This is accompanied by the (gradle) projects that provide their sample implement
 ##Hello World Service Anatomy - Architecture
 A simple 'hello world' service that showcases the bare minimum functionalities a service would posess: means to manage accounts, means to manage authorizations for accounts, and means to manage the core business logic / functionality the service is to offer.
 
-![overview](images/hw-service-anatomy.tiff)
+![hw-service-anatomy](images/hw-service-anatomy.png)
 
 ##Hello-World Service Anatomy - Implementation
 Some implementation details:
@@ -42,7 +42,7 @@ Some implementation details:
 ##Hello-World Service Broker Anatomy - Architecture
 A simple 'hello world' service broker that showcases the bare minimum functionalities a service broker would posess: implementation of the V2 service broker API, and means to interact with the actual service functionality it is to broker access to.
 
-![overview](images/hw-service-broker-anatomy.tiff)
+![hw-service-broker-anatomy](images/hw-service-broker-anatomy.png)
 
 ##Hello-World Service Broker Anatomy - Implementation
 Some implementation details:
@@ -56,7 +56,7 @@ Some implementation details:
 The complete ecosystem consists of a service broker deployment, service deployment, one or more applications that are bound to service instances. PCF's Cloud Controller will interact with the service broker to control service instance lifecycle management, and application to service instance binding.
 Note that there are opportunities to test the behaviors of all components either in isolation or in an integrated manner.
 
-![overview](images/hw-ecosystem.tiff)
+![hw-ecosystem](images/hw-ecosystem.png)
 
 ##Hands On: Building and Deploying the HW Service
 Build and deploy the HW service (project: hello-world-spring-service) as a PCF application:
@@ -259,11 +259,11 @@ $ cf push she -p target/spring-hello-env.war
 
 Browse to spring-hello-env and show 'environment':
 
-![overview](images/spring-hw-env.tiff)
+![spring-hw-env](images/spring-hw-env.png)
 
 Browse to the provided 'hello world' URL (the values of the 'uri' element in the 'helloworldService' element in VCAP_SERVICES):
 
-![overview](images/spring-hw-url.tiff)
+![spring-hw-url](images/spring-hw-url.png)
 
 ##TODO / Further Work Suggestions
 * Clean-up
