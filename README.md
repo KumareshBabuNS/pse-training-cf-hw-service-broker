@@ -15,6 +15,8 @@ This is accompanied by the (gradle) projects that provide their sample implement
 
 **NOTE: service broker registration requires admin privileges on the PCF deployment used**
 
+**If admin access is NOT available to you, request an admin user to carry out service broker registration**
+
 ##Lab Goals
 * Get a better understanding of the semantics of the service broker V2 API
 * Review the architecture / design of a Hello World service broker (and the Hello World service it “fronts”)
@@ -74,10 +76,11 @@ applications:
 - name: hello-world-spring-service
   memory: 512M
   instances: 1
+  host: hello-world-spring-service-${random-word}
   path: ./build/libs/hello-world-spring-service-0.1.war
 ````
 ##Hands On: Testing the HW service using curl
-Excercising the creation of a service instance, an account, and the autorization to allow that accoiunt to access the created service instance:
+Excercising the creation of a service instance, an account, and the autorization to allow that account to access the created service instance:
 
 On a local Tomcat instance:
 
@@ -126,6 +129,7 @@ applications:
 - name: hello-world-spring-service-broker
   memory: 512M
   instances: 1
+  host: hello-world-spring-service-broker-${random-word}
   path: ./build/libs/hello-world-spring-service-broker-0.1.war
 ````
 ##Hands On: Testing the HW service broker using curl

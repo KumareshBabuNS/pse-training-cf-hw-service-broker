@@ -3,4 +3,5 @@ applications:
 - name: hello-world-spring-service
   memory: 512M
   instances: 1
+  host: hello-world-spring-service-${random-word}
   path: ./build/libs/hello-world-spring-service-0.1.war

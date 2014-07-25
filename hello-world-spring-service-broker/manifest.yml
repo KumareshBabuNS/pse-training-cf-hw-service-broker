@@ -1,6 +1,6 @@
 ---
 env:
-  HW_SERVICE_HOST: hello-world-spring-service.10.244.0.34.xip.io
+  HW_SERVICE_HOST: hello-world-spring-service-unpreened-multimotor.cfapps.io
   HW_SERVICE_PORT: 80
   HW_SERVICE_ADMIN_USERNAME: admin
   HW_SERVICE_ADMIN_PASSWORD: admin
@@ -9,4 +9,5 @@ applications:
 - name: hello-world-spring-service-broker
   memory: 512M
   instances: 1
+  host: hello-world-spring-service-broker-${random-word}
   path: ./build/libs/hello-world-spring-service-broker-0.1.war
