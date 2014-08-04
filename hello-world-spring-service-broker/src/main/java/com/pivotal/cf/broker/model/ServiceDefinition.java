@@ -34,12 +34,12 @@ public class ServiceDefinition {
 	@JsonSerialize
 	@JsonProperty("description")
 	private String description;
-	
+
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("bindable")
 	private boolean bindable;
-	
+
 	@NotEmpty
 	@JsonSerialize
 	@JsonProperty("plans")
@@ -51,8 +51,8 @@ public class ServiceDefinition {
 	
 	@JsonSerialize
 	@JsonProperty("metadata")
-	private Map<String,Object> metadata = new HashMap<String,Object>();
-	
+    private Map<String,Object> metadata = new HashMap<String,Object>();
+
 	@JsonSerialize
 	@JsonProperty("requires")
 	private List<String> requires = new ArrayList<String>();
@@ -65,14 +65,14 @@ public class ServiceDefinition {
 		this.setPlans(plans);
 	}
 
-	public ServiceDefinition(String id, String name, String description, boolean bindable, List<Plan> plans,
+    public ServiceDefinition(String id, String name, String description, boolean bindable, List<Plan> plans,
 			List<String> tags, Map<String,Object> metadata, List<String> requires) {
 		this(id, name, description, bindable, plans);
 		setTags(tags);
 		setMetadata(metadata);
 		setRequires(requires);
 	}
-	
+
 	public String getId() {
 		return id;
 	}

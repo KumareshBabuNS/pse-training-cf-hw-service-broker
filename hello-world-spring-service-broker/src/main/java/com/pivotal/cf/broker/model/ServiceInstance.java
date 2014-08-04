@@ -34,21 +34,16 @@ public class ServiceInstance {
 	@JsonSerialize
 	@JsonProperty("space_guid")
 	private String spaceGuid;
-	
-	@JsonSerialize
-	@JsonProperty("dashboard_url")
-	private String dashboardUrl;
 
 	@SuppressWarnings("unused")
 	private ServiceInstance() {}
 	
-	public ServiceInstance( String id, String serviceDefinitionId, String planId, String organizationGuid, String spaceGuid, String dashboardUrl ) {
+	public ServiceInstance( String id, String serviceDefinitionId, String planId, String organizationGuid, String spaceGuid) {
 		setId(id);
 		setServiceDefinitionId(serviceDefinitionId);
 		setPlanId(planId);
 		setOrganizationGuid(organizationGuid);
 		setSpaceGuid(spaceGuid);
-		setDashboardUrl(dashboardUrl);
 	}
 	
 	public String getId() {
@@ -90,15 +85,6 @@ public class ServiceInstance {
 	private void setSpaceGuid(String spaceGuid) {
 		this.spaceGuid = spaceGuid;
 	}
-
-	public String getDashboardUrl() {
-		return dashboardUrl;
-	}
-
-	private void setDashboardUrl(String dashboardUrl) {
-		this.dashboardUrl = dashboardUrl;
-	}
-
     @Override
     public String toString() {
         return "ServiceInstance{" +
@@ -107,7 +93,6 @@ public class ServiceInstance {
                 ", planId='" + planId + '\'' +
                 ", organizationGuid='" + organizationGuid + '\'' +
                 ", spaceGuid='" + spaceGuid + '\'' +
-                ", dashboardUrl='" + dashboardUrl + '\'' +
                 '}';
     }
 }

@@ -37,7 +37,7 @@ public class HelloWorldServiceInstanceService implements ServiceInstanceService 
 
         logger.info("createServiceInstance: hw Instance Id: " + serviceInstanceId);
 
-        return new ServiceInstance(serviceInstanceId, serviceDefinition.getId(), planId, orgGuid, spaceGuid, "dash_url");
+        return new ServiceInstance(serviceInstanceId, serviceDefinition.getId(), planId, orgGuid, spaceGuid);
     }
 
     @Override

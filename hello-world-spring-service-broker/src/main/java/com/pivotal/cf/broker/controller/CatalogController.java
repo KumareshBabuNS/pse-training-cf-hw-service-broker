@@ -33,19 +33,18 @@ public class CatalogController extends BaseController {
 	public CatalogController(CatalogService catalogService) {
 		this.catalogService = catalogService;
 	}
-	
+
 	@RequestMapping(value = BASE_PATH, method = RequestMethod.GET)
     public @ResponseBody Catalog getCatalog(@RequestHeader(value = "X-Broker-Api-Version") String version,
                                             HttpServletRequest request, HttpServletResponse response) {
 		logger.info("GET: " + BASE_PATH + ", getCatalog() + api version: " + version);
 
-        if(Float.parseFloat(version) != SUPPORTED_VERSION) {
+        if(Float.parseFloat(version) >= SUPPORTED_VERSION) {
+            return catalogService.getCatalog();
+        }
+        else {
             response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
             return null;
         }
-        else {
-    		return catalogService.getCatalog();
-        }
 	}
-	
 }

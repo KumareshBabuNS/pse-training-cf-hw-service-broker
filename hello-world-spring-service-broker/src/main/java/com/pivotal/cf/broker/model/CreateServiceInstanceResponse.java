@@ -21,11 +21,4 @@ public class CreateServiceInstanceResponse {
 	public CreateServiceInstanceResponse(ServiceInstance instance) {
 		this.instance = instance;
 	}
-
-	@JsonSerialize
-	@JsonProperty("dashboard_url")
-	public String getDashboardUrl() {
-		return instance.getDashboardUrl();
-	}
-	
 }

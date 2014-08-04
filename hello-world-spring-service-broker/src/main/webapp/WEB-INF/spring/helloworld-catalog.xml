@@ -21,6 +21,7 @@
         <constructor-arg name="bindable" value="true"/>
         <constructor-arg name="plans" ref="helloworldPlans" />
         <property name="tags" ref="helloworldTags"/>
+        <property name="metadata" ref="metaData"/>
     </bean>
 
     <util:list id="helloworldPlans">
@@ -30,12 +31,46 @@
     <bean id="helloworld-plan" class="com.pivotal.cf.broker.model.Plan">
         <constructor-arg name="id" value="hello-world"/>
         <constructor-arg name="name" value="hello-world"/>
-        <constructor-arg name="description" value="This is a the (only) helloworld plan."/>
+        <constructor-arg name="description" value="This is the (only) helloworld plan."/>
+<!--        <property name="metadata" ref="planMetaData"/> -->
     </bean>
 
     <util:list id="helloworldTags">
         <value>helloworld</value>
         <value>rdbms</value>
     </util:list>
+
+    <util:map id="metaData">
+        <entry key="displayName" value="HelloWorld"/>
+<!--        <entry key="imageUrl" value="http://findicons.com/files/icons/144/web/128/earth.png"/> -->
+        <entry key="imageUrl" value=""/>
+        <entry key="longDescription" value="HelloWorld Service"/>
+        <entry key="providerDisplayName" value="Pivotal"/>
+        <entry key="documentationUrl" value="http://www.example.com"/>
+        <entry key="supportUrl" value="http://www.example.com"/>
+    </util:map>
+
+    <util:map id="planMetaData">
+        <entry key="displayName" value="free plan"/>
+        <entry key="bullets" value-ref="bullets"/>
+        <entry key="costs" value-ref="costs"/>
+    </util:map>
+
+    <util:list id="bullets">
+        <value>free</value>
+    </util:list>
+
+    <util:list id="costs">
+        <ref bean="cost"/>
+    </util:list>
+
+    <util:map id="cost">
+        <entry key="amount" value-ref="usd"/>
+        <entry key="unit" value="FREE"/>
+    </util:map>
+
+    <util:map id="usd">
+        <entry key="usd" value="0"/>
+    </util:map>
 
 </beans>

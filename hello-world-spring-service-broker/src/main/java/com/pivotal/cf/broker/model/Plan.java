@@ -33,9 +33,9 @@ public class Plan {
 	private String description;
 	
 	@JsonSerialize
-	@JsonProperty("metadata")
-	private Map<String,Object> metadata = new HashMap<String,Object>();
-	
+    @JsonProperty("metadata")
+    private Map<String,Object> metadata;
+
 	public Plan(String id, String name, String description) {
 		this.id = id;
 		this.name = name;
@@ -63,12 +63,8 @@ public class Plan {
 		return metadata;
 	}
 	
-	private void setMetadata(Map<String, Object> metadata) {
-		if (metadata == null) {
-			this.metadata = new HashMap<String,Object>();
-		} else {
-			this.metadata = metadata;
-		}
+	public void setMetadata(Map<String, Object> metadata) {
+	    this.metadata = metadata;
 	}
 	
 }

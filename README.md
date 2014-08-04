@@ -1,5 +1,6 @@
 #Pivotal CF - Adding and Using Brokered Services
 
+---
 This lab showcases Cloud foundry service broker concepts.
 
 It describes the use of a sample "Hello World" (Java Spring) service broker and the service backend it fronts.
@@ -15,6 +16,9 @@ This is accompanied by the (gradle) projects that provide their sample implement
 
 **NOTE: service broker registration requires admin privileges on the PCF deployment used**
 
+**If admin access is available, request an admin user to carry out service broker registration**
+
+---
 ##Lab Goals
 * Get a better understanding of the semantics of the service broker V2 API
 * Review the architecture / design of a Hello World service broker (and the Hello World service it “fronts”)
@@ -24,11 +28,13 @@ This is accompanied by the (gradle) projects that provide their sample implement
   * Create and access a new service Instance
   * Bind the new instance to an application and test
 
+---
 ##Hello World Service Anatomy - Architecture
 A simple 'hello world' service that showcases the bare minimum functionalities a service would posess: means to manage accounts, means to manage authorizations for accounts, and means to manage the core business logic / functionality the service is to offer.
 
-![hw-service-anatomy](images/hw-service-anatomy.png)
+![inline](images/hw-service-anatomy.png)
 
+---
 ##Hello-World Service Anatomy - Implementation
 Some implementation details:
 
@@ -39,11 +45,13 @@ Some implementation details:
   * Have to be authorized to access the ‘hello world’ “instance”
 * A ‘hello world’ instance is represented by the “hello world server” serving (upon a GET) of a string stating: “Hello World [\<instance id>]”
 
+---
 ##Hello-World Service Broker Anatomy - Architecture
 A simple 'hello world' service broker that showcases the bare minimum functionalities a service broker would posess: implementation of the V2 service broker API, and means to interact with the actual service functionality it is to broker access to.
 
-![hw-service-broker-anatomy](images/hw-service-broker-anatomy.png)
+![inline](images/hw-service-broker-anatomy.png)
 
+---
 ##Hello-World Service Broker Anatomy - Implementation
 Some implementation details:
 
@@ -52,12 +60,15 @@ Some implementation details:
 * Has to be told per **env vars** where that actual Hello World service resides (+ creds to access)
 * A simple authenticator shields access to broker REST calls (password string has to be the reverse of the username provided to successfully authenticate) 
 
+---
 ##Hello-World Ecosystem
 The complete ecosystem consists of a service broker deployment, service deployment, one or more applications that are bound to service instances. PCF's Cloud Controller will interact with the service broker to control service instance lifecycle management, and application to service instance binding.
 Note that there are opportunities to test the behaviors of all components either in isolation or in an integrated manner.
 
-![hw-ecosystem](images/hw-ecosystem.png)
+---
+![inline](images/hw-ecosystem.png)
 
+---
 ##Hands On: Building and Deploying the HW Service
 Build and deploy the HW service (project: hello-world-spring-service) as a PCF application:
 
@@ -74,10 +85,13 @@ applications:
 - name: hello-world-spring-service
   memory: 512M
   instances: 1
+  host: hello-world-spring-service-${random-word}
   path: ./build/libs/hello-world-spring-service-0.1.war
 ````
+
+---
 ##Hands On: Testing the HW service using curl
-Excercising the creation of a service instance, an account, and the autorization to allow that accoiunt to access the created service instance:
+Excercising the creation of a service instance, an account, and the autorization to allow that account to access the created service instance:
 
 On a local Tomcat instance:
 
@@ -102,6 +116,8 @@ $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/authoriz
 $ curl http://eddie:secret@hello-world-spring-service.10.244.0.34.xip.io/helloworld/hw1
 Hello World [hw1]
 ````
+
+---
 ##Hands On: Building and Deploying the HW Service Broker
 
 Build and deploy the HW service broker (project: hello-world-spring-service-broker) as a PCF application:
@@ -111,12 +127,13 @@ $ gradle war
 … cf api / login / target org & space 
 $ cf push
 ````
+
+---
 contents of manifest.yml:
 
 **NOTE: replace the value for 'HW_SERVICE_HOST' with your Hello World service URI!!!**
 
 ````
----
 env:
   HW_SERVICE_HOST: hello-world-spring-service.10.244.0.34.xip.io
   HW_SERVICE_PORT: 80
@@ -126,10 +143,14 @@ applications:
 - name: hello-world-spring-service-broker
   memory: 512M
   instances: 1
+  host: hello-world-spring-service-broker-${random-word}
   path: ./build/libs/hello-world-spring-service-broker-0.1.war
 ````
+
+---
 ##Hands On: Testing the HW service broker using curl
 **NOTE: replace the sample service broker URI with the proper value for your deployment!!!**
+
 
 ````
 $ curl http://admin:admin@hello-world-spring-service-broker.10.244.0.34.xip.io/v2/service_instances/foo -d '{
@@ -148,6 +169,8 @@ $ curl http://admin:admin@hello-world-spring-service-broker.10.244.0.34.xip.io/v
 $  curl http://gnidniboof:43ae9@hello-world-spring-service.10.244.0.34.xip.io:80/helloworld/foo
 $ Hello World [foo]
 ````
+
+---
 ##Hand On: Create, register, and make the service broker accessible
 
 Create the service broker:
@@ -161,7 +184,8 @@ Getting service brokers as admin...
 name                         url
 hello-world-service-broker   http://hello-world-spring-service-broker.10.244.0.34.xip.io
 ````
-Make service broker accessible:
+---
+###Make service broker publically accessible
 Find the GUID for the hello world service plan we want to make publically accessible:
 
 **NOTE: the GUID can be found in the 'metadata / guid' entry**
@@ -196,7 +220,9 @@ $ cf curl /v2/service_plans -X 'GET'
   ]
 }
 ````
-Make the service plan publically accessible:
+
+---
+###Make the service plan publically accessible
 
 **NOTE: replace the GUID value with the one found using the previous 'curl' invocation**
 
@@ -232,8 +258,10 @@ service             	plans         	description
 helloworldService   	hello-world   	helloworld Service Instances
 ````
 
+---
 ##Hands On: Create, bind, and use a service instance
 Create a hello world service instance:
+
 
 ````
 $ cf create-service helloworldService hello-world hw1
@@ -246,6 +274,7 @@ Name     service                    plan              bound apps
 hw1        helloworldService   hello-world
 ````
 
+---
 Bind the instance to a sample app (e.g., spring-hello-env):
 
 ````
@@ -257,24 +286,28 @@ $ cf push she -p target/spring-hello-env.war
 …
 ````
 
+---
 Browse to spring-hello-env and show 'environment':
 
-![spring-hw-env](images/spring-hw-env.png)
+![inline](images/spring-hw-env.png)
 
+---
 Browse to the provided 'hello world' URL (the values of the 'uri' element in the 'helloworldService' element in VCAP_SERVICES):
 
-![spring-hw-url](images/spring-hw-url.png)
+![inline](images/spring-hw-url.png)
 
+---
 ##TODO / Further Work Suggestions
 * Clean-up
-  * E.g., use a ‘user defined service’ instance to provide Hello world service connection details to the Hello world service broker
-* Convert to Spring Boot
+  * E.g., use a __user defined service__ instance to provide Hello world service connection details to the Hello world service broker
+* Convert to __Spring Boot__
 * See how the Hello World broker differs from the approach taken in https://github.com/cloudfoundry-community/spring-service-broker and https://github.com/cloudfoundry-community/spring-boot-cf-service-broker(note the need for ‘state maintenance’ in the broker…)
 
+---
 ## Resources
-* [Service Broker API](http://docs.gopivotal.com/pivotalcf/services/api.html)
-* [Managing Service Brokers](http://docs.gopivotal.com/pivotalcf/services/managing-service-brokers.html)
-* [Binding Credentials](http://docs.gopivotal.com/pivotalcf/services/binding-credentials.html)
-* [Tiny sample application: spring-hello-env](https://github.com/cloudfoundry-samples/spring-hello-env)
+* [http://docs.gopivotal.com/pivotalcf/services/api.html](http://docs.gopivotal.com/pivotalcf/services/api.html)
+* [http://docs.gopivotal.com/pivotalcf/services/managing-service-brokers.html](http://docs.gopivotal.com/pivotalcf/services/managing-service-brokers.html)
+* [http://docs.gopivotal.com/pivotalcf/services/binding-credentials.html](http://docs.gopivotal.com/pivotalcf/services/binding-credentials.html)
+* [Tiny sample application: https://github.com/cloudfoundry-samples/spring-hello-env](https://github.com/cloudfoundry-samples/spring-hello-env)
 
 
