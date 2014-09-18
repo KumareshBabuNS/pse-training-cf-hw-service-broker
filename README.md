@@ -72,12 +72,12 @@ $ cf push
 
 contents of manifest.yml:
 ````
---
+---
 applications:
 - name: hello-world-spring-service
   memory: 512M
   instances: 1
-  host: hello-world-spring-service-${random-word}
+  host: hello-world-spring-service
   path: ./build/libs/hello-world-spring-service-0.1.war
 ````
 ##Hands On: Testing the HW service using curl
@@ -102,7 +102,7 @@ $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/accounts
 $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/accounts
 [{"id":"eddie","pwdHash":"Xj8iPz8/Pz8/P3Y/Pz8/aQ=="}]
 $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/authorizations/authz1?accountId=eddie\&hwInstanceId=hw1 -X PUT
-{"id":"authz1","accountId":"eddie","hwInstanceId":"hw1”}
+{"id":"authz1","accountId":"eddie","hwInstanceId":"hw1"}
 $ curl http://eddie:secret@hello-world-spring-service.10.244.0.34.xip.io/helloworld/hw1
 Hello World [hw1]
 ````
@@ -130,7 +130,7 @@ applications:
 - name: hello-world-spring-service-broker
   memory: 512M
   instances: 1
-  host: hello-world-spring-service-broker-${random-word}
+  host: hello-world-spring-service-broker
   path: ./build/libs/hello-world-spring-service-broker-0.1.war
 ````
 ##Hands On: Testing the HW service broker using curl
