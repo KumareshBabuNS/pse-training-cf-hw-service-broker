@@ -53,7 +53,7 @@ Some implementation details:
 * Spring MVC based
 * ‘Mediator’ is the construct that communicates with the Hello World service (using RestTemplate)
 * Has to be told per **env vars** where that actual Hello World service resides (+ creds to access)
-* A simple authenticator shields access to broker REST calls (password string has to be the reverse of the username provided to successfully authenticate) 
+* A simple authenticator shields access to broker REST calls (password string has to be the reverse of the username provided to successfully authenticate)
 
 ##Hello-World Ecosystem
 The complete ecosystem consists of a service broker deployment, service deployment, one or more applications that are bound to service instances. PCF's Cloud Controller will interact with the service broker to control service instance lifecycle management, and application to service instance binding.
@@ -66,7 +66,7 @@ Build and deploy the HW service (project: hello-world-spring-service) as a PCF a
 
 ```
 $ gradle war
-… cf api / login / target org & space 
+… cf api / login / target org & space
 $ cf push
 ```
 
@@ -97,14 +97,14 @@ After push to a (local) bosh-lite/CF or PCF install:
 
 ````
 $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/hwinstances/hw1 -X PUT
-[{"id":"hw1"}]
+Return >>>> []
 $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/accounts/eddie?password=secret -X PUT
 $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/accounts
-[{"id":"eddie","pwdHash":"Xj8iPz8/Pz8/P3Y/Pz8/aQ=="}]
+Return >>>> [{"id":"eddie","pwdHash":"Xj8iPz8/Pz8/P3Y/Pz8/aQ=="}]
 $ curl http://admin:admin@hello-world-spring-service.10.244.0.34.xip.io/authorizations/authz1?accountId=eddie\&hwInstanceId=hw1 -X PUT
-{"id":"authz1","accountId":"eddie","hwInstanceId":"hw1"}
+Return >>>> {"id":"authz1","accountId":"eddie","hwInstanceId":"hw1"}
 $ curl http://eddie:secret@hello-world-spring-service.10.244.0.34.xip.io/helloworld/hw1
-Hello World [hw1]
+Return>>>Hello World [hw1]
 ````
 ##Hands On: Building and Deploying the HW Service Broker
 
@@ -112,7 +112,7 @@ Build and deploy the HW service broker (project: hello-world-spring-service-brok
 
 ````
 $ gradle war
-… cf api / login / target org & space 
+… cf api / login / target org & space
 $ cf push
 ````
 contents of manifest.yml:
@@ -143,15 +143,18 @@ $ curl http://admin:admin@hello-world-spring-service-broker.10.244.0.34.xip.io/v
   "organization_guid": "org-guid-here",
   "space_guid":        "space-guid-here"
 }' -X PUT -H "Content-Type:application/json"
-> > > > > {"dashboard_url":"dash_url"}
+
+
 $ curl http://admin:admin@hello-world-spring-service-broker.10.244.0.34.xip.io/v2/service_instances/foo/service_bindings/foobinding -d '{
   "service_id": "helloworld",
   "plan_id": "hello-world",
   "app_guid": "my-application-guid"
 }' -X PUT -H "Content-Type:application/json"
-> > > > {"credentials":{"port":"80","username":"gnidniboof","host":"hello-world-spring-service.10.244.0.34.xip.io","uri":"http://gnidniboof:43ae9@hello-world-spring-service.10.244.0.34.xip.io:80/helloworld/foo","password":"43ae9"},"syslog_drain_url":null}
+
+Return >>>> {"credentials":{"port":"80","username":"gnidniboof","host":"hello-world-spring-service.10.244.0.34.xip.io","uri":"http://gnidniboof:43ae9@hello-world-spring-service.10.244.0.34.xip.io:80/helloworld/foo","password":"43ae9"},"syslog_drain_url":null}
+
 $  curl http://gnidniboof:43ae9@hello-world-spring-service.10.244.0.34.xip.io:80/helloworld/foo
-$ Hello World [foo]
+Return >>>> Hello World [foo]
 ````
 ##Hand On: Create, register, and make the service broker accessible
 
@@ -173,6 +176,8 @@ Find the GUID for the hello world service plan we want to make publically access
 
 ````
 $ cf curl /v2/service_plans -X 'GET'
+
+Return :>>>>
 {
   "total_results": 1,
   "total_pages": 1,
@@ -207,6 +212,8 @@ Make the service plan publically accessible:
 
 ````
 $ cf curl /v2/service_plans/e66d3945-16f8-4060-9e78-13d914634254 -X 'PUT' -d '{"public":true}'
+
+Return >>>
 {
   "metadata": {
     "guid": "e66d3945-16f8-4060-9e78-13d914634254",
@@ -281,5 +288,3 @@ Browse to the provided 'hello world' URL (the values of the 'uri' element in the
 * [Managing Service Brokers](http://docs.gopivotal.com/pivotalcf/services/managing-service-brokers.html)
 * [Binding Credentials](http://docs.gopivotal.com/pivotalcf/services/binding-credentials.html)
 * [Tiny sample application: spring-hello-env](https://github.com/cloudfoundry-samples/spring-hello-env)
-
-
