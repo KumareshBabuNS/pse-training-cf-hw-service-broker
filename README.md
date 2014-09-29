@@ -281,7 +281,6 @@ Browse to the provided 'hello world' URL (the values of the 'uri' element in the
 * Clean-up
   * E.g., use a ‘user defined service’ instance to provide Hello world service connection details to the Hello world service broker
 * Convert to Spring Boot
-* See how the Hello World broker differs from the approach taken in https://github.com/cloudfoundry-community/spring-service-broker and https://github.com/cloudfoundry-community/spring-boot-cf-service-broker(note the need for ‘state maintenance’ in the broker…)
 
 ## Resources
 * [Service Broker API](http://docs.gopivotal.com/pivotalcf/services/api.html)
